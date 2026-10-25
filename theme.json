@@ -5,3 +5,94 @@
     "appearanceTools": true
   }
 }
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 2,
+	"settings": {
+		"appearanceTools": true,
+		"layout": {
+			"contentSize": "750px",
+			"wideSize": "1200px"
+		},
+		"color": {
+			"defaultPalette": false,
+			"palette": [
+				{ "slug": "base", "color": "#ffffff", "name": "Base" },
+				{ "slug": "contrast", "color": "#1A2B4C", "name": "Contrast" },
+				{ "slug": "primary", "color": "#1A2B4C", "name": "Primary" },
+				{ "slug": "accent", "color": "#C5A059", "name": "Accent" },
+				{ "slug": "muted", "color": "#f3f4f6", "name": "Muted" }
+			]
+		},
+		"typography": {
+			"defaultFontSizes": false,
+			"fluid": true,
+			"fontFamilies": [
+				{
+					"fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+					"name": "System Sans",
+					"slug": "system"
+				}
+			],
+			"fontSizes": [
+				{ "slug": "small", "size": "0.875rem", "name": "Small" },
+				{ "slug": "normal", "size": "1rem", "name": "Normal" },
+				{ "slug": "medium", "size": "1.25rem", "name": "Medium" },
+				{ "slug": "large", "size": "1.5rem", "name": "Large" },
+				{ "slug": "x-large", "size": "2rem", "name": "Extra Large" },
+				{ "slug": "xx-large", "size": "2.5rem", "name": "Huge" }
+			]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--base)",
+			"text": "var(--wp--preset--color--contrast)"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--system)",
+			"fontSize": "var(--wp--preset--font-size--normal)",
+			"lineHeight": "1.6"
+		},
+		"spacing": {
+			"padding": {
+				"left": "0",
+				"right": "0"
+			},
+			"blockGap": "1.5rem"
+		},
+		"elements": {
+			"link": {
+				"color": {
+					"text": "var(--wp--preset--color--primary)"
+				},
+				"typography": {
+					"textDecoration": "none"
+				},
+				":hover": {
+					"typography": {
+						"textDecoration": "underline"
+					}
+				}
+			},
+			"h1": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--xx-large)",
+					"lineHeight": "1.2"
+				}
+			},
+			"h2": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--x-large)",
+					"lineHeight": "1.2"
+				}
+			},
+			"h3": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--large)",
+					"lineHeight": "1.3"
+				}
+			}
+		}
+	}
+    }
