@@ -1,0 +1,37 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/wp-admin/",
+  "login": true,
+  "preferredVersions": {
+    "php": "8.3",
+    "wp": "latest"
+  },
+  "steps": [
+    {
+      "step": "installTheme",
+      "themeData": {
+        "resource": "git:directory",
+        "url": "https://github.com/mo1563882-sudo/pergamon-free",
+        "ref": "HEAD",
+        "path": ""
+      },
+      "options": {
+        "activate": true,
+        "targetFolderName": "pergamon-free"
+      }
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "git:directory",
+        "url": "https://github.com/mo1563882-sudo/pergamon",
+        "ref": "HEAD",
+        "path": ""
+      },
+      "options": {
+        "activate": true,
+        "targetFolderName": "pergamon"
+      }
+    }
+  ]
+    }
