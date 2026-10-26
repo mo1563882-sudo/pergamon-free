@@ -32,61 +32,44 @@ final class Theme {
 	private function register_hooks(): void {
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_front' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin' ) );
 		
 		$this->init_features();
 	}
 
 	private function init_features(): void {
-		$features = array(
-			Features\Settings::class,
-			Features\Dark_Mode::class,
-			Features\H1_Protection::class,
-			Features\Schema::class,
-			Features\TOC::class,
-			Features\Reading_Progress::class,
-			Features\Search_Overlay::class,
-			Features\Floating_Menu::class, // الميزة الجديدة
-		);
+		$feature_files = glob( PERGAMON_DIR . '/includes/features/class-*.php' );
+		if ( ! $feature_files ) {
+			return;
+		}
 
-		foreach ( $features as $feature_class ) {
-			$feature = new $feature_class();
-			if ( method_exists( $feature, 'register' ) ) {
-				$feature->register();
+		foreach ( $feature_files as $file ) {
+			$class_name = 'Pergamon\\Features\\' . str_replace( array( 'class-', '.php', '-' ), array( '', '', '_' ), basename( $file ) );
+			if ( class_exists( $class_name ) ) {
+				$feature = new $class_name();
+				if ( method_exists( $feature, 'register' ) ) {
+					$feature->register();
+				}
 			}
 		}
 	}
 
 	public function setup(): void {
-		// Intentionally empty in Phase 1.
+		load_theme_textdomain( 'pergamon', PERGAMON_DIR . '/languages' );
 	}
 
 	public function enqueue_front(): void {
-		wp_enqueue_style(
-			'pergamon-dark-mode',
-			PERGAMON_URI . '/assets/css/dark-mode.css',
-			array(),
-			PERGAMON_VERSION
-		);
+		wp_enqueue_style( 'pergamon-dark-mode', PERGAMON_URI . '/assets/css/dark-mode.css', array(), PERGAMON_VERSION );
+		wp_enqueue_style( 'pergamon-reading-progress', PERGAMON_URI . '/assets/css/reading-progress.css', array(), PERGAMON_VERSION );
+		wp_enqueue_style( 'pergamon-search-overlay', PERGAMON_URI . '/assets/css/search-overlay.css', array(), PERGAMON_VERSION );
+		wp_enqueue_style( 'pergamon-floating-menu', PERGAMON_URI . '/assets/css/floating-menu.css', array(), PERGAMON_VERSION );
+	}
 
-		wp_enqueue_style(
-			'pergamon-reading-progress',
-			PERGAMON_URI . '/assets/css/reading-progress.css',
-			array(),
-			PERGAMON_VERSION
-		);
-
-		wp_enqueue_style(
-			'pergamon-search-overlay',
-			PERGAMON_URI . '/assets/css/search-overlay.css',
-			array(),
-			PERGAMON_VERSION
-		);
-
-		wp_enqueue_style(
-			'pergamon-floating-menu',
-			PERGAMON_URI . '/assets/css/floating-menu.css',
-			array(),
-			PERGAMON_VERSION
-		);
+	public function enqueue_admin( string $hook ): void {
+		if ( 'toplevel_page_pergamon-settings' !== $hook ) {
+			return;
+		}
+		wp_enqueue_style( 'pergamon-admin', PERGAMON_URI . '/assets/css/admin.css', array(), PERGAMON_VERSION );
+		wp_enqueue_script( 'pergamon-admin', PERGAMON_URI . '/assets/js/admin.js', array(), PERGAMON_VERSION, true );
 	}
 }
