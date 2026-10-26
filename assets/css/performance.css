@@ -1,0 +1,7 @@
+/**
+ * Performance Styles.
+ */
+/* Prevent CLS for images */
+img {
+	aspect-ratio: attr(width) / attr(height);
+}
