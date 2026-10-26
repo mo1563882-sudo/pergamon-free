@@ -43,7 +43,8 @@ final class Theme {
 			Features\H1_Protection::class,
 			Features\Schema::class,
 			Features\TOC::class,
-			Features\Reading_Progress::class, // الميزة الجديدة
+			Features\Reading_Progress::class,
+			Features\Search_Overlay::class,
 		);
 
 		foreach ( $features as $feature_class ) {
@@ -69,6 +70,13 @@ final class Theme {
 		wp_enqueue_style(
 			'pergamon-reading-progress',
 			PERGAMON_URI . '/assets/css/reading-progress.css',
+			array(),
+			PERGAMON_VERSION
+		);
+
+		wp_enqueue_style(
+			'pergamon-search-overlay',
+			PERGAMON_URI . '/assets/css/search-overlay.css',
 			array(),
 			PERGAMON_VERSION
 		);
