@@ -45,6 +45,7 @@ final class Theme {
 			Features\TOC::class,
 			Features\Reading_Progress::class,
 			Features\Search_Overlay::class,
+			Features\Floating_Menu::class, // الميزة الجديدة
 		);
 
 		foreach ( $features as $feature_class ) {
@@ -77,6 +78,13 @@ final class Theme {
 		wp_enqueue_style(
 			'pergamon-search-overlay',
 			PERGAMON_URI . '/assets/css/search-overlay.css',
+			array(),
+			PERGAMON_VERSION
+		);
+
+		wp_enqueue_style(
+			'pergamon-floating-menu',
+			PERGAMON_URI . '/assets/css/floating-menu.css',
 			array(),
 			PERGAMON_VERSION
 		);
