@@ -1,0 +1,44 @@
+/**
+ * WooCommerce Basic Styles (Free).
+ */
+
+.woocommerce ul.products {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: var(--wp--preset--spacing--30);
+}
+
+.woocommerce ul.products li.product {
+	margin: 0;
+	text-align: center;
+	background: var(--wp--preset--color--base);
+	border: 1px solid var(--wp--preset--color--muted);
+	border-radius: 8px;
+	padding: var(--wp--preset--spacing--20);
+	transition: transform 0.3s ease;
+}
+
+.woocommerce ul.products li.product:hover {
+	transform: translateY(-5px);
+}
+
+.woocommerce ul.products li.product img {
+	border-radius: 6px;
+	margin-bottom: var(--wp--preset--spacing--20);
+}
+
+.woocommerce .button,
+.woocommerce button.button,
+.woocommerce input.button {
+	background-color: var(--wp--preset--color--primary) !important;
+	color: var(--wp--preset--color--base) !important;
+	border-radius: 4px !important;
+	padding: 10px 20px !important;
+	font-weight: 600;
+	text-decoration: none;
+	transition: opacity 0.3s ease;
+}
+
+.woocommerce .button:hover {
+	opacity: 0.8;
+}
