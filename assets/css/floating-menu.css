@@ -1,34 +1,22 @@
-/**
- * Unified Floating Menu (Zero JS).
- */
-
 .pergamon-floating-menu {
 	position: fixed;
-	z-index: 9999;
+	z-index: 999;
 	opacity: 0;
 	visibility: hidden;
 	animation: pergamon-fm-fade-in 0.5s ease 3s forwards;
 }
 
 @keyframes pergamon-fm-fade-in {
-	to {
-		opacity: 1;
-		visibility: visible;
-	}
+	to { opacity: 1; visibility: visible; }
 }
 
-/* Positions */
 .pergamon-fm-bottom-right { bottom: 30px; right: 30px; }
 .pergamon-fm-bottom-left { bottom: 30px; left: 30px; }
 .pergamon-fm-top-right { top: 30px; right: 30px; }
 .pergamon-fm-top-left { top: 30px; left: 30px; }
 
-/* Hide Checkbox */
-.pergamon-floating-menu__checkbox {
-	display: none;
-}
+.pergamon-floating-menu__checkbox { display: none; }
 
-/* Toggle Button */
 .pergamon-floating-menu__toggle {
 	display: flex;
 	align-items: center;
@@ -45,12 +33,10 @@
 	user-select: none;
 }
 
-/* Rotate icon when open */
 .pergamon-floating-menu__checkbox:checked ~ .pergamon-floating-menu__toggle {
 	transform: rotate(45deg);
 }
 
-/* Dropdown Links Container */
 .pergamon-floating-menu__links {
 	position: absolute;
 	background: var(--wp--preset--color--base, #ffffff);
@@ -64,43 +50,33 @@
 	transition: all 0.3s ease;
 	box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 	min-width: 180px;
-	z-index: 10000;
+	z-index: 1000;
 }
 
-/* Smart Behavior: Open Upwards if at the bottom */
 .pergamon-fm-bottom-right .pergamon-floating-menu__links,
 .pergamon-fm-bottom-left .pergamon-floating-menu__links {
 	bottom: calc(var(--pergamon-fm-size, 50px) + 15px);
 	transform: translateY(10px);
 }
 
-/* Smart Behavior: Open Downwards if at the top */
 .pergamon-fm-top-right .pergamon-floating-menu__links,
 .pergamon-fm-top-left .pergamon-floating-menu__links {
 	top: calc(var(--pergamon-fm-size, 50px) + 15px);
 	transform: translateY(-10px);
 }
 
-/* Align Right */
 .pergamon-fm-bottom-right .pergamon-floating-menu__links,
-.pergamon-fm-top-right .pergamon-floating-menu__links {
-	right: 0;
-}
+.pergamon-fm-top-right .pergamon-floating-menu__links { right: 0; }
 
-/* Align Left */
 .pergamon-fm-bottom-left .pergamon-floating-menu__links,
-.pergamon-fm-top-left .pergamon-floating-menu__links {
-	left: 0;
-}
+.pergamon-fm-top-left .pergamon-floating-menu__links { left: 0; }
 
-/* Open State */
 .pergamon-floating-menu__checkbox:checked ~ .pergamon-floating-menu__links {
 	opacity: 1;
 	visibility: visible;
 	transform: translateY(0);
 }
 
-/* Links Style */
 .pergamon-floating-menu__links a {
 	text-decoration: none;
 	color: var(--wp--preset--color--contrast, #1A2B4C);
@@ -114,7 +90,6 @@
 	background: var(--wp--preset--color--muted, #f3f4f6);
 }
 
-/* Title */
 .pergamon-fm-title {
 	padding: 5px 15px 10px 15px;
 	font-size: 0.85rem;
