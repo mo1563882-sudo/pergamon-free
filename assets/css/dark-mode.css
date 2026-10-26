@@ -1,0 +1,17 @@
+/**
+ * Dark Mode Styles.
+ * Overrides theme.json variables when the pergamon-dark-mode class is present.
+ */
+
+html.pergamon-dark-mode {
+	--wp--preset--color--base: #121212;
+	--wp--preset--color--contrast: #e0e0e0;
+	--wp--preset--color--primary: #8ab4f8; /* لون أزرق أفتح للتباين */
+	--wp--preset--color--muted: #2c2c2c;
+	--wp--preset--color--accent: #e5c07b;
+}
+
+/* لضمان عدم تأثير الألوان الداكنة على بعض العناصر التي قد تحدد ألوانها بشكل صريح */
+html.pergamon-dark-mode .wp-block-cover__background {
+	opacity: 0.7;
+}
