@@ -1,0 +1,3 @@
+.pergamon-tab-content { display: none; }
+.pergamon-tab-content.active { display: block; }
+.pergamon-hidden { display: none !important; }
