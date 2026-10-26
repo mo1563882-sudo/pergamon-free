@@ -46,6 +46,11 @@ final class Theme {
 	}
 
 	public function enqueue_front(): void {
-		// Intentionally empty in Phase 1.
+		wp_enqueue_style(
+			'pergamon-dark-mode',
+			PERGAMON_URI . '/assets/css/dark-mode.css',
+			array(),
+			PERGAMON_VERSION
+		);
 	}
 }
