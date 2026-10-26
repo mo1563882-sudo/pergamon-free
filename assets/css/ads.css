@@ -1,0 +1,45 @@
+/**
+ * Advertisements Styles.
+ */
+
+/* Containers hidden until injected */
+.pergamon-ad-container {
+	display: block;
+	text-align: center;
+	margin: var(--wp--preset--spacing--30) 0;
+	min-height: 50px; /* Prevent CLS */
+}
+
+/* Sticky Top Bar */
+.pergamon-ad-checkbox {
+	display: none;
+}
+
+.pergamon-sticky-topbar {
+	position: relative;
+	background: var(--wp--preset--color--muted);
+	padding: 10px;
+	text-align: center;
+	z-index: 9999;
+}
+
+.pergamon-ad-close {
+	position: absolute;
+	right: 15px;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 1.2rem;
+	color: var(--wp--preset--color--contrast);
+}
+
+[dir="rtl"] .pergamon-ad-close {
+	right: auto;
+	left: 15px;
+}
+
+/* Close Top Bar */
+.pergamon-ad-checkbox:checked ~ .pergamon-sticky-topbar {
+	display: none;
+}
