@@ -16,7 +16,6 @@ final class Theme {
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_front' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin' ) );
-		add_filter( 'style_loader_tag', array( $this, 'async_css' ), 10, 2 );
 		$this->init_features();
 	}
 	private function init_features(): void {
@@ -44,12 +43,5 @@ final class Theme {
 		if ( 'toplevel_page_pergamon-settings' !== $hook ) return;
 		wp_enqueue_style( 'pergamon-admin', PERGAMON_URI . '/assets/css/admin.css', array(), PERGAMON_VERSION );
 		wp_enqueue_script( 'pergamon-admin', PERGAMON_URI . '/assets/js/admin.js', array(), PERGAMON_VERSION, true );
-	}
-	public function async_css( string $tag, string $handle ): string {
-		// نجعل كل ملفات CSS الخاصة بنا Async (غير معيقة للعرض)
-		if ( strpos( $handle, 'pergamon-' ) === 0 ) {
-			return str_replace( "rel='stylesheet'", "rel='preload' as='style' onload=\"this.onload=null;this.rel='stylesheet'\"", $tag );
-		}
-		return $tag;
 	}
 }
