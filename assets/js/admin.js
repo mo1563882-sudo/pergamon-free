@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Tabs
+    // 1. Settings Tabs
     const tabs = document.querySelectorAll('.nav-tab');
     const contents = document.querySelectorAll('.pergamon-tab-content');
     
@@ -15,49 +15,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Toggle floating menu settings
-    const floatingMenuCheckbox = document.getElementById('enable_floating_menu');
-    const floatingMenuSettings = document.getElementById('pergamon-floating-menu-settings');
-    if (floatingMenuCheckbox && floatingMenuSettings) {
-        floatingMenuCheckbox.addEventListener('change', function() {
-            floatingMenuSettings.classList.toggle('pergamon-hidden', !this.checked);
-        });
-        floatingMenuSettings.classList.toggle('pergamon-hidden', !floatingMenuCheckbox.checked);
-    }
-
-    // Repeater
+    // 2. Repeater for Floating Menu
     const container = document.getElementById('pergamon-repeater-container');
-    if (!container) return;
-    
-    const addBtn = document.getElementById('pergamon-add-row');
-    const template = document.getElementById('pergamon-row-template').innerHTML;
-    let rowIndex = container.querySelectorAll('.pergamon-repeater-row').length;
+    if (container) {
+        const addBtn = document.getElementById('pergamon-add-row');
+        const template = document.getElementById('pergamon-row-template').innerHTML;
+        let rowIndex = container.querySelectorAll('.pergamon-repeater-row').length;
 
-    if (addBtn) {
-        addBtn.addEventListener('click', function() {
-            const html = template.replace(/__index__/g, rowIndex);
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
-            container.appendChild(tempDiv.firstElementChild);
-            rowIndex++;
+        if (addBtn) {
+            addBtn.addEventListener('click', function() {
+                const html = template.replace(/__index__/g, rowIndex);
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+                container.appendChild(tempDiv.firstElementChild);
+                rowIndex++;
+            });
+        }
+
+        container.addEventListener('click', function(e) {
+            const target = e.target;
+            const row = target.closest('.pergamon-repeater-row');
+            if (!row) return;
+            
+            if (target.classList.contains('pergamon-remove-row')) row.remove();
+            else if (target.classList.contains('pergamon-move-up') && row.previousElementSibling) row.parentNode.insertBefore(row, row.previousElementSibling);
+            else if (target.classList.contains('pergamon-move-down') && row.nextElementSibling) row.parentNode.insertBefore(row.nextElementSibling, row);
         });
     }
-
-    container.addEventListener('click', function(e) {
-        const target = e.target;
-        const row = target.closest('.pergamon-repeater-row');
-        if (!row) return;
-        
-        if (target.classList.contains('pergamon-remove-row')) {
-            row.remove();
-        } else if (target.classList.contains('pergamon-move-up')) {
-            if (row.previousElementSibling) {
-                row.parentNode.insertBefore(row, row.previousElementSibling);
-            }
-        } else if (target.classList.contains('pergamon-move-down')) {
-            if (row.nextElementSibling) {
-                row.parentNode.insertBefore(row.nextElementSibling, row);
-            }
-        }
-    });
 });
