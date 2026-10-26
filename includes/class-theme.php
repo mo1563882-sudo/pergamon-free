@@ -42,6 +42,9 @@ final class Theme {
 
 		$h1_protection = new Features\H1_Protection();
 		$h1_protection->register();
+
+		$schema = new Features\Schema();
+		$schema->register();
 	}
 
 	public function setup(): void {
