@@ -17,7 +17,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Floating_Menu {
 
 	public function register(): void {
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_css' ) );
 		add_action( 'wp_footer', array( $this, 'render_menu' ) );
+	}
+
+	/**
+	 * Conditional CSS loading. Zero KB if disabled.
+	 */
+	public function enqueue_css(): void {
+		$options = get_option( 'pergamon_settings', array() );
+		$enabled = isset( $options['enable_floating_menu'] ) ? $options['enable_floating_menu'] : '0';
+
+		if ( '1' === $enabled ) {
+			wp_enqueue_style( 'pergamon-floating-menu', PERGAMON_URI . '/assets/css/floating-menu.css', array(), PERGAMON_VERSION );
+		}
 	}
 
 	public function render_menu(): void {
