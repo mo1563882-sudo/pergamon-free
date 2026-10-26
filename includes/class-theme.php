@@ -2,8 +2,6 @@
 /**
  * Main theme class. Singleton. Orchestrates all Free features.
  *
- * Phase 1: hooks registered but empty. Phases 3-6 fill them.
- *
  * @package Pergamon
  * @since   0.1.0
  */
@@ -34,22 +32,19 @@ final class Theme {
 	private function register_hooks(): void {
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_front' ) );
+		
+		$this->init_features();
 	}
 
-	/**
-	 * Theme setup. Filled in Phase 3.
-	 *
-	 * @since 0.1.0
-	 */
+	private function init_features(): void {
+		$dark_mode = new Features\Dark_Mode();
+		$dark_mode->register();
+	}
+
 	public function setup(): void {
 		// Intentionally empty in Phase 1.
 	}
 
-	/**
-	 * Front-end assets. Filled in Phase 3.
-	 *
-	 * @since 0.1.0
-	 */
 	public function enqueue_front(): void {
 		// Intentionally empty in Phase 1.
 	}
