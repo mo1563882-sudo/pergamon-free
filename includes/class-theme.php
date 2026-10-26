@@ -37,20 +37,21 @@ final class Theme {
 	}
 
 	private function init_features(): void {
-		$settings = new Features\Settings();
-		$settings->register();
+		$features = array(
+			Features\Settings::class,
+			Features\Dark_Mode::class,
+			Features\H1_Protection::class,
+			Features\Schema::class,
+			Features\TOC::class,
+			Features\Reading_Progress::class, // الميزة الجديدة
+		);
 
-		$dark_mode = new Features\Dark_Mode();
-		$dark_mode->register();
-
-		$h1_protection = new Features\H1_Protection();
-		$h1_protection->register();
-
-		$schema = new Features\Schema();
-		$schema->register();
-
-		$toc = new Features\TOC();
-		$toc->register();
+		foreach ( $features as $feature_class ) {
+			$feature = new $feature_class();
+			if ( method_exists( $feature, 'register' ) ) {
+				$feature->register();
+			}
+		}
 	}
 
 	public function setup(): void {
@@ -61,6 +62,13 @@ final class Theme {
 		wp_enqueue_style(
 			'pergamon-dark-mode',
 			PERGAMON_URI . '/assets/css/dark-mode.css',
+			array(),
+			PERGAMON_VERSION
+		);
+
+		wp_enqueue_style(
+			'pergamon-reading-progress',
+			PERGAMON_URI . '/assets/css/reading-progress.css',
 			array(),
 			PERGAMON_VERSION
 		);
