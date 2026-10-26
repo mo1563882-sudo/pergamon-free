@@ -18,6 +18,8 @@ final class Schema {
 
 	public function register(): void {
 		add_action( 'wp_head', array( $this, 'output_schema' ), 99 );
+		add_action( 'save_post', array( $this, 'save_schema_meta' ) );
+		add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 	}
 
 	public function output_schema(): void {
@@ -87,6 +89,22 @@ final class Schema {
 		);
 
 		echo '<script type="application/ld+json">' . wp_json_encode( $graph, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n";
+	}
+
+	public function save_schema_meta( int $post_id ): void {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+		
+		// Save a basic timestamp or identifier to post_meta as requested in specs
+		update_post_meta( $post_id, '_pergamon_schema_generated', current_time( 'mysql' ) );
+	}
+
+	public function admin_notice(): void {
+		$options = get_option( 'pergamon_settings', array() );
+		$mode    = isset( $options['schema_mode'] ) ? $options['schema_mode'] : 'auto';
+
+		if ( 'auto' === $mode && $this->has_seo_plugin() && ! get_user_meta( get_current_user_id(), 'pergamon_dismissed_schema_notice', true ) ) {
+			echo '<div class="notice notice-warning is-dismissible"><p><strong>Pergamon:</strong> An SEO plugin was detected. Theme schema is disabled in Auto mode to prevent duplication. <a href="' . esc_url( admin_url( 'admin.php?page=pergamon-settings' ) ) . '">Manage Settings</a></p></div>';
+		}
 	}
 
 	private function has_seo_plugin(): bool {
