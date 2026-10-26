@@ -31,7 +31,6 @@ final class Theme {
 
 	private function register_hooks(): void {
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_front' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin' ) );
 		
 		$this->init_features();
@@ -56,21 +55,6 @@ final class Theme {
 
 	public function setup(): void {
 		load_theme_textdomain( 'pergamon', PERGAMON_DIR . '/languages' );
-	}
-
-	public function enqueue_front(): void {
-		$css_files = glob( PERGAMON_DIR . '/assets/css/*.css' );
-		if ( $css_files ) {
-			foreach ( $css_files as $file ) {
-				$filename = basename( $file, '.css' );
-				wp_enqueue_style(
-					'pergamon-' . $filename,
-					PERGAMON_URI . '/assets/css/' . $filename . '.css',
-					array(),
-					PERGAMON_VERSION
-				);
-			}
-		}
 	}
 
 	public function enqueue_admin( string $hook ): void {
