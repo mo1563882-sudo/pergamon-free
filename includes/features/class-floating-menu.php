@@ -43,7 +43,6 @@ final class Floating_Menu {
 			return;
 		}
 
-		// CSS Variables for dynamic sizing and coloring
 		$style = sprintf(
 			'--pergamon-fm-size: %dpx; --pergamon-fm-color: %s;',
 			$size,
@@ -55,9 +54,7 @@ final class Floating_Menu {
 			<input type="checkbox" id="pergamon-floating-menu__checkbox" class="pergamon-floating-menu__checkbox">
 			<label for="pergamon-floating-menu__checkbox" class="pergamon-floating-menu__toggle" aria-label="Toggle Menu"><?php echo esc_html( $icon ); ?></label>
 			<div class="pergamon-floating-menu__links">
-				<div class="pergamon-fm-title" style="font-weight:bold; padding:5px 10px; font-size:0.9rem; border-bottom:1px solid var(--wp--preset--color--muted); margin-bottom:5px;">
-					<?php echo esc_html( $title ); ?>
-				</div>
+				<div class="pergamon-fm-title"><?php echo esc_html( $title ); ?></div>
 				<?php foreach ( $items as $item ) : 
 					$item_title = isset( $item['title'] ) ? $item['title'] : '';
 					$url        = isset( $item['url'] ) ? $item['url'] : '';
