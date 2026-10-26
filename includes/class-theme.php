@@ -37,6 +37,9 @@ final class Theme {
 	}
 
 	private function init_features(): void {
+		$settings = new Features\Settings();
+		$settings->register();
+
 		$dark_mode = new Features\Dark_Mode();
 		$dark_mode->register();
 
@@ -45,6 +48,9 @@ final class Theme {
 
 		$schema = new Features\Schema();
 		$schema->register();
+
+		$toc = new Features\TOC();
+		$toc->register();
 	}
 
 	public function setup(): void {
