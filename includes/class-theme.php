@@ -59,10 +59,18 @@ final class Theme {
 	}
 
 	public function enqueue_front(): void {
-		wp_enqueue_style( 'pergamon-dark-mode', PERGAMON_URI . '/assets/css/dark-mode.css', array(), PERGAMON_VERSION );
-		wp_enqueue_style( 'pergamon-reading-progress', PERGAMON_URI . '/assets/css/reading-progress.css', array(), PERGAMON_VERSION );
-		wp_enqueue_style( 'pergamon-search-overlay', PERGAMON_URI . '/assets/css/search-overlay.css', array(), PERGAMON_VERSION );
-		wp_enqueue_style( 'pergamon-floating-menu', PERGAMON_URI . '/assets/css/floating-menu.css', array(), PERGAMON_VERSION );
+		$css_files = glob( PERGAMON_DIR . '/assets/css/*.css' );
+		if ( $css_files ) {
+			foreach ( $css_files as $file ) {
+				$filename = basename( $file, '.css' );
+				wp_enqueue_style(
+					'pergamon-' . $filename,
+					PERGAMON_URI . '/assets/css/' . $filename . '.css',
+					array(),
+					PERGAMON_VERSION
+				);
+			}
+		}
 	}
 
 	public function enqueue_admin( string $hook ): void {
