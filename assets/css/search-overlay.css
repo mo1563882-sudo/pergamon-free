@@ -1,0 +1,57 @@
+/**
+ * Search Overlay (Zero JS).
+ */
+
+.pergamon-search-checkbox {
+	display: none;
+}
+
+.pergamon-search-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: var(--wp--preset--color--base);
+	z-index: 99999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.pergamon-search-checkbox:checked ~ .pergamon-search-overlay {
+	opacity: 1;
+	visibility: visible;
+}
+
+.pergamon-search-overlay form {
+	width: 90%;
+	max-width: 600px;
+}
+
+.pergamon-search-close {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	cursor: pointer;
+	font-size: 2rem;
+	background: none;
+	border: none;
+	color: var(--wp--preset--color--contrast);
+}
+
+[dir="rtl"] .pergamon-search-close {
+	right: auto;
+	left: 20px;
+}
+
+.pergamon-search-icon {
+	cursor: pointer;
+	font-size: 1.2rem;
+	background: none;
+	border: none;
+	color: var(--wp--preset--color--contrast);
+}
