@@ -1,7 +1,6 @@
 <?php
 /**
  * Admin Settings page for Pergamon.
- * Handles the Schema mode toggle.
  *
  * @package Pergamon
  * @since   0.1.0
@@ -37,6 +36,7 @@ final class Settings {
 	public function register_settings(): void {
 		register_setting( 'pergamon_settings_group', 'pergamon_settings', array( $this, 'sanitize_settings' ) );
 
+		// Schema Section
 		add_settings_section(
 			'pergamon_schema_section',
 			'Schema Settings',
@@ -51,15 +51,37 @@ final class Settings {
 			'pergamon-settings',
 			'pergamon_schema_section'
 		);
+
+		// General Section
+		add_settings_section(
+			'pergamon_general_section',
+			'General Settings',
+			null,
+			'pergamon-settings'
+		);
+
+		add_settings_field(
+			'enable_floating_menu',
+			'Floating Menu',
+			array( $this, 'render_floating_menu_field' ),
+			'pergamon-settings',
+			'pergamon_general_section'
+		);
 	}
 
 	public function sanitize_settings( array $input ): array {
 		$output = array();
+
+		// Schema
 		if ( isset( $input['schema_mode'] ) && in_array( $input['schema_mode'], array( 'auto', 'on', 'off' ), true ) ) {
 			$output['schema_mode'] = $input['schema_mode'];
 		} else {
 			$output['schema_mode'] = 'auto';
 		}
+
+		// Floating Menu
+		$output['enable_floating_menu'] = isset( $input['enable_floating_menu'] ) ? '1' : '0';
+
 		return $output;
 	}
 
@@ -76,11 +98,19 @@ final class Settings {
 			<option value="on" <?php selected( $mode, 'on' ); ?>>Always On</option>
 			<option value="off" <?php selected( $mode, 'off' ); ?>>Always Off</option>
 		</select>
-		<p class="description">
-			<strong>Auto:</strong> Outputs schema only if no SEO plugin (Yoast, RankMath, etc.) is active.<br>
-			<strong>Always On:</strong> Forces schema output even if an SEO plugin is active.<br>
-			<strong>Always Off:</strong> Disables schema output entirely.
-		</p>
+		<p class="description">Auto: Outputs schema only if no SEO plugin is active.</p>
+		<?php
+	}
+
+	public function render_floating_menu_field(): void {
+		$options = get_option( 'pergamon_settings', array() );
+		$enabled = isset( $options['enable_floating_menu'] ) ? $options['enable_floating_menu'] : '0';
+		?>
+		<label>
+			<input type="checkbox" name="pergamon_settings[enable_floating_menu]" value="1" <?php checked( $enabled, '1' ); ?>>
+			Enable Floating Menu
+		</label>
+		<p class="description">Displays a unified floating action button on the frontend.</p>
 		<?php
 	}
 
