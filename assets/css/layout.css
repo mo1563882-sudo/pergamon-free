@@ -1,0 +1,30 @@
+/**
+ * Layout Grid Styles.
+ */
+
+.pergamon-content-wrapper {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--wp--preset--spacing--40);
+	align-items: start;
+}
+
+@media (min-width: 769px) {
+	body.pergamon-sidebar-right:not(.pergamon-hide-sidebar) .pergamon-content-wrapper {
+		grid-template-columns: 2fr 1fr;
+	}
+
+	body.pergamon-sidebar-left:not(.pergamon-hide-sidebar) .pergamon-content-wrapper {
+		grid-template-columns: 1fr 2fr;
+	}
+
+	body.pergamon-sidebar-left:not(.pergamon-hide-sidebar) .pergamon-content-wrapper main {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	body.pergamon-sidebar-left:not(.pergamon-hide-sidebar) .pergamon-content-wrapper .pergamon-sidebar {
+		grid-column: 1;
+		grid-row: 1;
+	}
+}
