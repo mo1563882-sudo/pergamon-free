@@ -17,6 +17,17 @@
 				{ "slug": "muted", "color": "#f3f4f6", "name": "Muted" }
 			]
 		},
+		"spacing": {
+			"defaultSpacingSizes": false,
+			"spacingSizes": [
+				{ "slug": "10", "size": "0.5rem", "name": "Tiny" },
+				{ "slug": "20", "size": "1rem", "name": "Small" },
+				{ "slug": "30", "size": "1.5rem", "name": "Medium" },
+				{ "slug": "40", "size": "2rem", "name": "Large" },
+				{ "slug": "50", "size": "3rem", "name": "Extra Large" },
+				{ "slug": "60", "size": "4rem", "name": "Huge" }
+			]
+		},
 		"typography": {
 			"defaultFontSizes": false,
 			"fluid": true,
@@ -52,7 +63,7 @@
 				"left": "0",
 				"right": "0"
 			},
-			"blockGap": "1.5rem"
+			"blockGap": "var(--wp--preset--spacing--30)"
 		},
 		"elements": {
 			"link": {
@@ -88,4 +99,4 @@
 			}
 		}
 	}
-		}
+				}
