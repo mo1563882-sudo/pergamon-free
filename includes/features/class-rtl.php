@@ -1,6 +1,6 @@
 <?php
 /**
- * RTL Support & Global Frontend CSS.
+ * RTL Support & Global Frontend Assets.
  *
  * @package Pergamon
  * @since   0.1.0
@@ -22,14 +22,14 @@ final class RTL {
 	}
 
 	public function enqueue_global_css(): void {
-		// تحميل الملفات الأساسية فقط في كل الصفحات
+		// الملفات الأساسية التي تعمل في كل الصفحات
 		wp_enqueue_style( 'pergamon-header', PERGAMON_URI . '/assets/css/header.css', array(), PERGAMON_VERSION );
 		wp_enqueue_style( 'pergamon-layout', PERGAMON_URI . '/assets/css/layout.css', array(), PERGAMON_VERSION );
 		wp_enqueue_style( 'pergamon-dark-mode', PERGAMON_URI . '/assets/css/dark-mode.css', array(), PERGAMON_VERSION );
 		wp_enqueue_style( 'pergamon-search-overlay', PERGAMON_URI . '/assets/css/search-overlay.css', array(), PERGAMON_VERSION );
-		wp_enqueue_style( 'pergamon-floating-menu', PERGAMON_URI . '/assets/css/floating-menu.css', array(), PERGAMON_VERSION );
 		wp_enqueue_style( 'pergamon-performance', PERGAMON_URI . '/assets/css/performance.css', array(), PERGAMON_VERSION );
 
+		// RTL يُحمّل فقط عند الحاجة
 		if ( is_rtl() ) {
 			wp_enqueue_style( 'pergamon-rtl', PERGAMON_URI . '/assets/css/rtl.css', array(), PERGAMON_VERSION );
 		}
