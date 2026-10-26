@@ -36,20 +36,18 @@ final class Settings {
 	public function register_settings(): void {
 		register_setting( 'pergamon_settings_group', 'pergamon_settings', array( $this, 'sanitize_settings' ) );
 
-		// Schema Section
 		add_settings_section( 'pergamon_schema_section', 'Schema Settings', array( $this, 'render_section_desc' ), 'pergamon-settings' );
 		add_settings_field( 'schema_mode', 'Schema Mode', array( $this, 'render_schema_field' ), 'pergamon-settings', 'pergamon_schema_section' );
 
-		// General Section
 		add_settings_section( 'pergamon_general_section', 'Floating Menu Settings', null, 'pergamon-settings' );
 		
 		add_settings_field( 'enable_floating_menu', 'Enable', array( $this, 'render_checkbox' ), 'pergamon-settings', 'pergamon_general_section', array( 'label' => 'Enable Floating Menu' ) );
+		add_settings_field( 'floating_menu_title', 'Menu Title', array( $this, 'render_text' ), 'pergamon-settings', 'pergamon_general_section', array( 'name' => 'floating_menu_title', 'placeholder' => 'Quick Links' ) );
 		add_settings_field( 'floating_menu_position', 'Position', array( $this, 'render_select' ), 'pergamon-settings', 'pergamon_general_section', array( 'options' => array( 'bottom-right' => 'Bottom Right', 'bottom-left' => 'Bottom Left', 'top-right' => 'Top Right', 'top-left' => 'Top Left' ) ) );
 		add_settings_field( 'floating_menu_size', 'Size (px)', array( $this, 'render_text' ), 'pergamon-settings', 'pergamon_general_section', array( 'name' => 'floating_menu_size', 'placeholder' => '50' ) );
 		add_settings_field( 'floating_menu_color', 'Color', array( $this, 'render_color' ), 'pergamon-settings', 'pergamon_general_section' );
 		add_settings_field( 'floating_menu_icon', 'Icon (Emoji/SVG)', array( $this, 'render_text' ), 'pergamon-settings', 'pergamon_general_section', array( 'name' => 'floating_menu_icon', 'placeholder' => '+' ) );
 		
-		// Repeater Field
 		add_settings_field( 'floating_menu_items', 'Menu Items', array( $this, 'render_repeater_field' ), 'pergamon-settings', 'pergamon_general_section' );
 	}
 
@@ -58,12 +56,12 @@ final class Settings {
 		$output['schema_mode'] = isset( $input['schema_mode'] ) && in_array( $input['schema_mode'], array( 'auto', 'on', 'off' ), true ) ? $input['schema_mode'] : 'auto';
 		$output['enable_floating_menu'] = isset( $input['enable_floating_menu'] ) ? '1' : '0';
 		
+		$output['floating_menu_title'] = isset( $input['floating_menu_title'] ) ? sanitize_text_field( $input['floating_menu_title'] ) : 'Quick Links';
 		$output['floating_menu_position'] = isset( $input['floating_menu_position'] ) ? sanitize_text_field( $input['floating_menu_position'] ) : 'bottom-right';
 		$output['floating_menu_size'] = isset( $input['floating_menu_size'] ) ? absint( $input['floating_menu_size'] ) : 50;
 		$output['floating_menu_color'] = isset( $input['floating_menu_color'] ) ? sanitize_hex_color( $input['floating_menu_color'] ) : '#1A2B4C';
 		$output['floating_menu_icon'] = isset( $input['floating_menu_icon'] ) ? sanitize_text_field( $input['floating_menu_icon'] ) : '+';
 
-		// Sanitize Repeater
 		$output['floating_menu_items'] = array();
 		if ( isset( $input['floating_menu_items'] ) && is_array( $input['floating_menu_items'] ) ) {
 			foreach ( $input['floating_menu_items'] as $item ) {
