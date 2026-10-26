@@ -39,6 +39,9 @@ final class Theme {
 	private function init_features(): void {
 		$dark_mode = new Features\Dark_Mode();
 		$dark_mode->register();
+
+		$h1_protection = new Features\H1_Protection();
+		$h1_protection->register();
 	}
 
 	public function setup(): void {
