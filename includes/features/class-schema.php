@@ -1,7 +1,6 @@
 <?php
 /**
  * Basic Schema (Free version) outputting a unified @graph.
- * Includes Auto mode detection for SEO plugins.
  *
  * @package Pergamon
  * @since   0.1.0
@@ -22,12 +21,17 @@ final class Schema {
 	}
 
 	public function output_schema(): void {
-		// Auto Mode: If an SEO plugin is active, output nothing.
-		if ( $this->has_seo_plugin() ) {
+		$options = get_option( 'pergamon_settings', array() );
+		$mode    = isset( $options['schema_mode'] ) ? $options['schema_mode'] : 'auto';
+
+		if ( 'off' === $mode ) {
 			return;
 		}
 
-		// Only output on single posts and pages.
+		if ( 'auto' === $mode && $this->has_seo_plugin() ) {
+			return;
+		}
+
 		if ( ! is_singular() ) {
 			return;
 		}
@@ -45,19 +49,17 @@ final class Schema {
 		$graph = array(
 			'@context' => 'https://schema.org',
 			'@graph'   => array(
-				// 1. Article Node
 				array(
-					'@type'            => 'Article',
-					'@id'              => $url . '#article',
-					'headline'         => $title,
-					'datePublished'    => get_the_date( 'c', $post_id ),
-					'dateModified'     => get_the_modified_date( 'c', $post_id ),
-					'author'           => array(
+					'@type'         => 'Article',
+					'@id'           => $url . '#article',
+					'headline'      => $title,
+					'datePublished' => get_the_date( 'c', $post_id ),
+					'dateModified'  => get_the_modified_date( 'c', $post_id ),
+					'author'        => array(
 						'@type' => 'Person',
 						'name'  => get_the_author_meta( 'display_name', get_post_field( 'post_author', $post_id ) ),
 					),
 				),
-				// 2. Breadcrumb Node
 				array(
 					'@type'           => 'BreadcrumbList',
 					'@id'             => $url . '#breadcrumb',
@@ -75,7 +77,6 @@ final class Schema {
 						),
 					),
 				),
-				// 3. WebSite Node
 				array(
 					'@type' => 'WebSite',
 					'@id'   => $site_url . '#website',
