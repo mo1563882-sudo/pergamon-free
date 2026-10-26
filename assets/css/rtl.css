@@ -1,0 +1,21 @@
+/**
+ * RTL Styles.
+ */
+
+body.rtl .pergamon-secondary-nav .wp-block-navigation__container {
+	justify-content: flex-start;
+}
+
+body.rtl .pergamon-breadcrumbs .sep {
+	transform: scaleX(-1);
+	display: inline-block;
+}
+
+body.rtl .pergamon-floating-menu__links {
+	text-align: right;
+}
+
+body.rtl .pergamon-ad-close {
+	right: auto;
+	left: 15px;
+}
