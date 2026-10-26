@@ -36,26 +36,25 @@ final class Settings {
 	public function register_settings(): void {
 		register_setting( 'pergamon_settings_group', 'pergamon_settings', array( $this, 'sanitize_settings' ) );
 
-		add_settings_section( 'pergamon_schema_section', 'Schema Settings', array( $this, 'render_section_desc' ), 'pergamon-settings' );
+		// Schema Tab
+		add_settings_section( 'pergamon_schema_section', 'Schema Settings', null, 'pergamon-settings' );
 		add_settings_field( 'schema_mode', 'Schema Mode', array( $this, 'render_schema_field' ), 'pergamon-settings', 'pergamon_schema_section' );
 
-		add_settings_section( 'pergamon_general_section', 'Floating Menu Settings', null, 'pergamon-settings' );
-		
-		add_settings_field( 'enable_floating_menu', 'Enable', array( $this, 'render_checkbox' ), 'pergamon-settings', 'pergamon_general_section', array( 'label' => 'Enable Floating Menu' ) );
-		add_settings_field( 'floating_menu_title', 'Menu Title', array( $this, 'render_text' ), 'pergamon-settings', 'pergamon_general_section', array( 'name' => 'floating_menu_title', 'placeholder' => 'Quick Links' ) );
-		add_settings_field( 'floating_menu_position', 'Position', array( $this, 'render_select' ), 'pergamon-settings', 'pergamon_general_section', array( 'options' => array( 'bottom-right' => 'Bottom Right', 'bottom-left' => 'Bottom Left', 'top-right' => 'Top Right', 'top-left' => 'Top Left' ) ) );
-		add_settings_field( 'floating_menu_size', 'Size (px)', array( $this, 'render_text' ), 'pergamon-settings', 'pergamon_general_section', array( 'name' => 'floating_menu_size', 'placeholder' => '50' ) );
-		add_settings_field( 'floating_menu_color', 'Color', array( $this, 'render_color' ), 'pergamon-settings', 'pergamon_general_section' );
-		add_settings_field( 'floating_menu_icon', 'Icon (Emoji/SVG)', array( $this, 'render_text' ), 'pergamon-settings', 'pergamon_general_section', array( 'name' => 'floating_menu_icon', 'placeholder' => '+' ) );
-		
-		add_settings_field( 'floating_menu_items', 'Menu Items', array( $this, 'render_repeater_field' ), 'pergamon-settings', 'pergamon_general_section' );
+		// Floating Menu Tab
+		add_settings_section( 'pergamon_floating_section', 'Floating Menu Settings', null, 'pergamon-settings' );
+		add_settings_field( 'enable_floating_menu', 'Enable', array( $this, 'render_checkbox' ), 'pergamon-settings', 'pergamon_floating_section', array( 'label' => 'Enable Floating Menu' ) );
+		add_settings_field( 'floating_menu_title', 'Menu Title', array( $this, 'render_text' ), 'pergamon-settings', 'pergamon_floating_section', array( 'name' => 'floating_menu_title', 'placeholder' => 'Quick Links' ) );
+		add_settings_field( 'floating_menu_position', 'Position', array( $this, 'render_select' ), 'pergamon-settings', 'pergamon_floating_section', array( 'options' => array( 'bottom-right' => 'Bottom Right', 'bottom-left' => 'Bottom Left', 'top-right' => 'Top Right', 'top-left' => 'Top Left' ) ) );
+		add_settings_field( 'floating_menu_size', 'Size (px)', array( $this, 'render_text' ), 'pergamon-settings', 'pergamon_floating_section', array( 'name' => 'floating_menu_size', 'placeholder' => '50' ) );
+		add_settings_field( 'floating_menu_color', 'Color', array( $this, 'render_color' ), 'pergamon-settings', 'pergamon_floating_section' );
+		add_settings_field( 'floating_menu_icon', 'Icon (Emoji/SVG)', array( $this, 'render_text' ), 'pergamon-settings', 'pergamon_floating_section', array( 'name' => 'floating_menu_icon', 'placeholder' => '+' ) );
+		add_settings_field( 'floating_menu_items', 'Menu Items', array( $this, 'render_repeater_field' ), 'pergamon-settings', 'pergamon_floating_section' );
 	}
 
 	public function sanitize_settings( array $input ): array {
 		$output = array();
 		$output['schema_mode'] = isset( $input['schema_mode'] ) && in_array( $input['schema_mode'], array( 'auto', 'on', 'off' ), true ) ? $input['schema_mode'] : 'auto';
 		$output['enable_floating_menu'] = isset( $input['enable_floating_menu'] ) ? '1' : '0';
-		
 		$output['floating_menu_title'] = isset( $input['floating_menu_title'] ) ? sanitize_text_field( $input['floating_menu_title'] ) : 'Quick Links';
 		$output['floating_menu_position'] = isset( $input['floating_menu_position'] ) ? sanitize_text_field( $input['floating_menu_position'] ) : 'bottom-right';
 		$output['floating_menu_size'] = isset( $input['floating_menu_size'] ) ? absint( $input['floating_menu_size'] ) : 50;
@@ -73,18 +72,15 @@ final class Settings {
 				}
 			}
 		}
-
 		return $output;
 	}
 
-	public function render_section_desc(): void { echo '<p>Configure structured data.</p>'; }
-	
 	public function render_schema_field(): void {
 		$options = get_option( 'pergamon_settings', array() );
 		$mode    = isset( $options['schema_mode'] ) ? $options['schema_mode'] : 'auto';
 		?>
 		<select name="pergamon_settings[schema_mode]">
-			<option value="auto" <?php selected( $mode, 'auto' ); ?>>Auto</option>
+			<option value="auto" <?php selected( $mode, 'auto' ); ?>>Auto (Detect SEO plugins)</option>
 			<option value="on" <?php selected( $mode, 'on' ); ?>>Always On</option>
 			<option value="off" <?php selected( $mode, 'off' ); ?>>Always Off</option>
 		</select>
@@ -94,7 +90,7 @@ final class Settings {
 	public function render_checkbox( array $args ): void {
 		$options = get_option( 'pergamon_settings', array() );
 		$val = isset( $options['enable_floating_menu'] ) ? $options['enable_floating_menu'] : '0';
-		echo '<label><input type="checkbox" name="pergamon_settings[enable_floating_menu]" value="1" ' . checked( '1', $val, false ) . '> ' . esc_html( $args['label'] ) . '</label>';
+		echo '<label><input type="checkbox" id="enable_floating_menu" name="pergamon_settings[enable_floating_menu]" value="1" ' . checked( '1', $val, false ) . '> ' . esc_html( $args['label'] ) . '</label>';
 	}
 
 	public function render_select( array $args ): void {
@@ -124,61 +120,29 @@ final class Settings {
 		$options = get_option( 'pergamon_settings', array() );
 		$items = isset( $options['floating_menu_items'] ) ? $options['floating_menu_items'] : array( array( 'title' => 'Home', 'url' => '/' ), array( 'title' => 'Back to Top', 'url' => '#' ) );
 		?>
-		<div id="pergamon-repeater-container" style="display:flex; flex-direction:column; gap:10px; max-width:600px;">
-			<?php foreach ( $items as $index => $item ) : ?>
+		<div id="pergamon-floating-menu-settings">
+			<div id="pergamon-repeater-container" style="display:flex; flex-direction:column; gap:10px; max-width:600px;">
+				<?php foreach ( $items as $index => $item ) : ?>
+					<div class="pergamon-repeater-row" style="display:flex; gap:10px; align-items:center;">
+						<input type="text" name="pergamon_settings[floating_menu_items][<?php echo $index; ?>][title]" value="<?php echo esc_attr( $item['title'] ); ?>" placeholder="Title" style="flex:1;">
+						<input type="text" name="pergamon_settings[floating_menu_items][<?php echo $index; ?>][url]" value="<?php echo esc_attr( $item['url'] ); ?>" placeholder="URL" style="flex:2;">
+						<button type="button" class="button pergamon-move-up" style="cursor:pointer;">↑</button>
+						<button type="button" class="button pergamon-move-down" style="cursor:pointer;">↓</button>
+						<button type="button" class="button pergamon-remove-row" style="color:red; cursor:pointer;">🗑️</button>
+					</div>
+				<?php endforeach; ?>
+			</div>
+			<p><button type="button" class="button button-primary" id="pergamon-add-row">+ Add Item</button></p>
+			<script type="text/template" id="pergamon-row-template">
 				<div class="pergamon-repeater-row" style="display:flex; gap:10px; align-items:center;">
-					<input type="text" name="pergamon_settings[floating_menu_items][<?php echo $index; ?>][title]" value="<?php echo esc_attr( $item['title'] ); ?>" placeholder="Title" style="flex:1;">
-					<input type="text" name="pergamon_settings[floating_menu_items][<?php echo $index; ?>][url]" value="<?php echo esc_attr( $item['url'] ); ?>" placeholder="URL" style="flex:2;">
+					<input type="text" name="pergamon_settings[floating_menu_items][__index__][title]" value="" placeholder="Title" style="flex:1;">
+					<input type="text" name="pergamon_settings[floating_menu_items][__index__][url]" value="" placeholder="URL" style="flex:2;">
 					<button type="button" class="button pergamon-move-up" style="cursor:pointer;">↑</button>
 					<button type="button" class="button pergamon-move-down" style="cursor:pointer;">↓</button>
 					<button type="button" class="button pergamon-remove-row" style="color:red; cursor:pointer;">🗑️</button>
 				</div>
-			<?php endforeach; ?>
+			</script>
 		</div>
-		<p><button type="button" class="button button-primary" id="pergamon-add-row">+ Add Item</button></p>
-		
-		<script type="text/template" id="pergamon-row-template">
-			<div class="pergamon-repeater-row" style="display:flex; gap:10px; align-items:center;">
-				<input type="text" name="pergamon_settings[floating_menu_items][__index__][title]" value="" placeholder="Title" style="flex:1;">
-				<input type="text" name="pergamon_settings[floating_menu_items][__index__][url]" value="" placeholder="URL" style="flex:2;">
-				<button type="button" class="button pergamon-move-up" style="cursor:pointer;">↑</button>
-				<button type="button" class="button pergamon-move-down" style="cursor:pointer;">↓</button>
-				<button type="button" class="button pergamon-remove-row" style="color:red; cursor:pointer;">🗑️</button>
-			</div>
-		</script>
-		<script>
-			document.addEventListener('DOMContentLoaded', function() {
-				let rowIndex = <?php echo count( $items ); ?>;
-				const container = document.getElementById('pergamon-repeater-container');
-				const template = document.getElementById('pergamon-row-template').innerHTML;
-
-				document.getElementById('pergamon-add-row').addEventListener('click', function() {
-					const html = template.replace(/__index__/g, rowIndex);
-					const tempDiv = document.createElement('div');
-					tempDiv.innerHTML = html;
-					container.appendChild(tempDiv.firstElementChild);
-					rowIndex++;
-				});
-
-				container.addEventListener('click', function(e) {
-					const target = e.target;
-					const row = target.closest('.pergamon-repeater-row');
-					if (!row) return;
-
-					if (target.classList.contains('pergamon-remove-row')) {
-						row.remove();
-					} else if (target.classList.contains('pergamon-move-up')) {
-						if (row.previousElementSibling) {
-							row.parentNode.insertBefore(row, row.previousElementSibling);
-						}
-					} else if (target.classList.contains('pergamon-move-down')) {
-						if (row.nextElementSibling) {
-							row.parentNode.insertBefore(row.nextElementSibling, row);
-						}
-					}
-				});
-			});
-		</script>
 		<?php
 	}
 
@@ -187,8 +151,22 @@ final class Settings {
 		?>
 		<div class="wrap">
 			<h1>Pergamon Settings</h1>
+			<h2 class="nav-tab-wrapper">
+				<a href="#schema" class="nav-tab nav-tab-active" data-target="pergamon-schema">Schema</a>
+				<a href="#floating" class="nav-tab" data-target="pergamon-floating">Floating Menu</a>
+			</h2>
 			<form action="options.php" method="post">
-				<?php settings_fields( 'pergamon_settings_group' ); do_settings_sections( 'pergamon-settings' ); submit_button(); ?>
+				<?php settings_fields( 'pergamon_settings_group' ); ?>
+				
+				<div id="pergamon-schema" class="pergamon-tab-content active">
+					<?php do_settings_sections( 'pergamon-settings' ); ?>
+				</div>
+				
+				<div id="pergamon-floating" class="pergamon-tab-content">
+					<?php do_settings_sections( 'pergamon-settings' ); ?>
+				</div>
+				
+				<?php submit_button(); ?>
 			</form>
 		</div>
 		<?php
