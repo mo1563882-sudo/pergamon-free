@@ -17,8 +17,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Ads {
 
 	public function register(): void {
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_ads_css' ) );
 		add_action( 'wp_body_open', array( $this, 'render_sticky_top' ), 5 );
 		add_filter( 'the_content', array( $this, 'inject_content_ads' ), 15 );
+	}
+
+	public function enqueue_ads_css(): void {
+		$options = get_option( 'pergamon_settings', array() );
+		$has_ads = ! empty( $options['ad_sticky_top'] ) || ! empty( $options['ad_content_top'] ) || ! empty( $options['ad_content_paragraph'] );
+
+		if ( $has_ads ) {
+			wp_enqueue_style( 'pergamon-ads', PERGAMON_URI . '/assets/css/ads.css', array(), PERGAMON_VERSION );
+		}
 	}
 
 	public function render_sticky_top(): void {
@@ -46,12 +56,10 @@ final class Ads {
 		$top_ad  = isset( $options['ad_content_top'] ) ? $options['ad_content_top'] : '';
 		$para_ad = isset( $options['ad_content_paragraph'] ) ? $options['ad_content_paragraph'] : '';
 
-		// 1. Ad after title (before content)
 		if ( ! empty( $top_ad ) ) {
 			$content = '<div class="pergamon-ad-container pergamon-ad-top">' . do_shortcode( $top_ad ) . '</div>' . $content;
 		}
 
-		// 2. Ad after first paragraph
 		if ( ! empty( $para_ad ) ) {
 			$paragraphs = explode( '</p>', $content );
 			if ( count( $paragraphs ) > 1 ) {
