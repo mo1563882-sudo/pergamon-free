@@ -43,3 +43,5 @@
 .pergamon-ad-checkbox:checked ~ .pergamon-sticky-topbar {
 	display: none;
 }
+.pergamon-ad-container:empty { display: none; }
+.pergamon-ad-container:not(:empty) { display: block; }
